@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Watches - The Ultimate Watches Collection</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        color: #333;
+        background-color: #f9f9f9;
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+      }
+
+      header {
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 36px;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .cap {
+        display: flex;
+        margin-bottom: 30px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 20px;
+        z-index: 120;
+      }
+
+      .cap-image {
+        flex: 0 0 40%;
+        width: 200px;
+        height: 200px;
+      }
+
+      .cap-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+
+      .cap-info {
+        flex: 1;
+        padding-left: 20px;
+      }
+
+      .cap-name {
+        font-size: 24px;
+        margin-bottom: 10px;
+      }
+
+      .cap-price {
+        font-size: 18px;
+        color: #f39c12;
+        margin-bottom: 10px;
+      }
+
+      .cap-description {
+        font-size: 16px;
+      }
+
+      .popup {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow-y: scroll;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(0, 0, 0, 0.6);
+        z-index: 9999;
+      }
+
+      .popup h2 {
+        color: #333;
+        margin-bottom: 10px;
+      }
+
+      .popup form {
+        background-color: #fff;
+        padding: 20px;
+        max-width: 400px;
+        margin: 100px auto;
+        max-height: 100%;
+        overflow: auto;
+        border-radius: 5px;
+      }
+
+      .popup label {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      .popup input[type="text"],
+      .popup input[type="email"],
+      .popup input[type="tel"],
+      .popup textarea {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+
+      .popup button[type="submit"] {
+        background-color: #333;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .popup button[type="submit"]:hover {
+        background-color: #444;
+      }
+
+      .popup .close {
+        position: fixed;
+        top: 10px;
+        right: 50px;
+        font-size: 24px;
+        cursor: pointer;
+      }
+
+      .popup img {
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Watches - The Ultimate Watches Collection</h1>
+    </header>
+    <div class="container"></div>
+    <div id="popup" class="popup">
+      <span class="close" id="close">&times;</span>
+      <form
+        id="orderForm"
+        action="https://formsubmit.co/mrshakaib8@gmail.com"
+        method="POST"
+        enctype="multipart/form-data"
+      >
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" /><br />
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" /><br />
+        <label for="number">Phone Number:</label>
+        <input type="tel" id="number" name="phone" /><br />
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address" /><br />
+        <label for="state">State:</label>
+        <input type="text" id="state" name="state" /><br />
+        <label for="city">City:</label>
+        <input type="text" id="city" name="city" /><br />
+        <label for="pincode">Pincode:</label>
+        <input type="text" id="pincode" name="pincode" /><br />
+        <input type="text" id="order" value="" hidden name="title" /><br />
+        <textarea
+          id="description"
+          rows="4"
+          cols="50"
+          hidden
+          name="description"
+        ></textarea
+        ><br />
+        <input type="text" id="price" value="" hidden name="price" /><br />
+        <input type="text" name="Image" id="srcofim" hidden />
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="module">
+      const socket = io();
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        get,
+      } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-database.js";
+      let anData;
+
+      const waitForMessage = () => {
+        return new Promise((resolve) => {
+          socket.on("firebaseConfig", (data) => {
+            anData = data;
+            resolve(data);
+          });
+        });
+      };
+
+      // Call the async function and update the message when the data is received
+      (async () => {
+        const data = await waitForMessage();
+        initializeApp(anData);
+        var db = getDatabase();
+        var sRef = ref(db, "thefitnesshub/orders/sports/male");
+        get(sRef).then((data) => {
+          data.forEach((element) => {
+            let html = `
+          <div class="cap">
+        <div class="cap-image">
+          <img src="${element.val().urltofile}" alt="Cap 1" class="imgrel" />
+        </div>
+        <div class="cap-info">
+          <div class="cap-name">${element.val().title}</div>
+          <div class="cap-price">₹ ${element.val().price}</div>
+          <div class="cap-description">
+            ${element.val().description}
+          </div>
+        </div>
+      </div>
+      `;
+            document.querySelector(".container").innerHTML += html;
+          });
+        });
+      })();
+
+      function showPopup(element) {
+        const popup = document.getElementById("popup");
+        const orderForm = document.getElementById("orderForm");
+
+        const capName = element.querySelector(".cap-name").textContent;
+        const capPrice = element.querySelector(".cap-price").textContent;
+        const capDescription =
+          element.querySelector(".cap-description").textContent;
+
+        // Check if the .cap-image img exists before accessing its src
+        const capImageElement = element.querySelector(".cap-image img");
+        const capPicture = capImageElement ? capImageElement.src : "";
+
+        document.getElementById("order").value = capName;
+        document.getElementById("description").value = capDescription;
+        document.getElementById("price").value = capPrice;
+        document.getElementById("srcofim").value = capPicture;
+
+        popup.style.display = "block";
+      }
+
+      function hidePopup() {
+        const popup = document.getElementById("popup");
+        popup.style.display = "none";
+      }
+
+      document.addEventListener("click", function (event) {
+        if (event.target.matches(".cap") || event.target.matches(".cap-info")) {
+          showPopup(event.target);
+        }
+      });
+
+      document.getElementById("close").addEventListener("click", hidePopup);
+    </script>
+  </body>
+</html>

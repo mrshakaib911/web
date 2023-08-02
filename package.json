@@ -1,0 +1,17 @@
+{
+  "name": "thefitnesshub",
+  "version": "1.0.2",
+  "private": true,
+  "dependencies": {
+    "dangerous-html": "0.1.13",
+    "express": "^4.18.2",
+    "firebase": "^10.0.0",
+    "parcel-bundler": "^1.6.1",
+    "socket.io": "^4.7.1"
+  },
+  "scripts": {},
+  "description": "this website is made by luoshenshi",
+  "main": "index.js",
+  "author": "luoshenshi",
+  "license": "ISC"
+}
