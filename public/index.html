@@ -53,7 +53,9 @@
       select {
         text-transform: none;
       }
-
+      #ancrr2{
+        margin-top: 20px;
+      }
       button,
       [type="button"],
       [type="reset"],
@@ -139,8 +141,12 @@
               data-role="Nav"
               class="home-nav"
             >
-              <a href="/about.html"><button class="home-button button-clean button">About</button></a>
-              <button class="home-button3 button-clean button">Team</button>
+              <a href="/about.html"
+                ><button class="home-button button-clean button">
+                  About
+                </button></a
+              >
+              <a href="/team.html"><button class="home-button3 button-clean button">Team</button></a>
             </nav>
           </div>
           <div data-thq="thq-navbar-btn-group" class="home-btn-group">
@@ -187,11 +193,8 @@
                 data-role="Nav"
                 class="home-nav2"
               >
-                <span class="home-text">About</span>
-                <span class="home-text01">Features</span>
-                <span class="home-text02">Pricing</span>
-                <span class="home-text03">Team</span>
-                <span class="home-text04">Blog</span>
+                <a id="ancrr1" href="/about.html"><span class="home-text">About</span></a>
+                <a id="ancrr2" href="/team.html"><span class="home-text03">Team</span></a>
               </nav>
               <div class="home-container2"></div>
             </div>
